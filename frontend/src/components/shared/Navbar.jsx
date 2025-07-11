@@ -16,9 +16,9 @@ const Navbar = () => {
 
                 <div className="flex items-center gap-6">
                     <ul className="flex font-medium items-center gap-10 text-sm text-gray-700">
-                        <li className="hover:text-[#F83002] cursor-pointer transition">Home</li>
-                        <li className="hover:text-[#F83002] cursor-pointer transition">Jobs</li>
-                        <li className="hover:text-[#F83002] cursor-pointer transition">Browse</li>
+                        <li className="hover:text-[#F83002] cursor-pointer transition"><Link to="/">Home</Link></li>
+                        <li className="hover:text-[#F83002] cursor-pointer transition"><Link to="/jobs">Jobs</Link></li>
+                        <li className="hover:text-[#F83002] cursor-pointer transition"><Link to="/browse">Browse</Link></li>
                     </ul>
 
                     {/* User checker */}
