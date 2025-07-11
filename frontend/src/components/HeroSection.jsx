@@ -4,7 +4,7 @@ import { Search } from 'lucide-react'
 import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
-    const [query, setQuery] = useState("");
+    // const [query, setQuery] = useState("");
 
     const navigate = useNavigate();
 
