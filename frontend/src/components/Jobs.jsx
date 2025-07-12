@@ -7,18 +7,22 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from './shared/Navbar'
 import Footer from './shared/Footer'
 import FilterCard from './FilterCard'
+import Job from './Job'
 
-const Job = ({ job }) => {
+const Jobs = ({ job }) => {
   const navigate = useNavigate();
   // const jobId = "lsekdhjgdsnfvsdkjf"
 
   return (
     <>
       <Navbar />
+      {/* filter page */}
       <FilterCard />
+      {/* job cards */}
+      <Job />
       <Footer />
     </>
   )
 }
 
-export default Job
+export default Jobs
