@@ -81,9 +81,9 @@ export const login = async (req, res) => {
         httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
         sameSite: "strict", // Helps prevent CSRF attacks
       })
-      .json({ message: "login successful", success: true });
+      .json({ message: "login successful", userExists, success: true });
   } catch (error) {
-    console.error("Errzor during login:", error);
+    console.error("Error during login:", error);
     return res
       .status(500)
       .json({ message: "Internal server error", success: false });

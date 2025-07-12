@@ -4,9 +4,10 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { LogOut, User2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
-    const user = false;
+    const { user } = useSelector(state => state.auth);
     return (
         <div className="bg-white shadow-sm">
             <div className="flex items-center justify-between mx-auto max-w-7xl h-16 px-4">
@@ -61,8 +62,8 @@ const Navbar = () => {
                                             />
                                         </Avatar>
                                         <div>
-                                            <h4 className="font-medium">Mohisn Mernstack</h4>
-                                            <p className="text-sm text-muted-foreground">mohisn@example.com</p>
+                                            <h4 className="font-medium">{user?.fullname}</h4>
+                                            <p className="text-sm text-muted-foreground">{user?.email}</p>
                                         </div>
                                     </div>
 
@@ -70,13 +71,13 @@ const Navbar = () => {
                                         <div className='flex w-fit items-center gap-2 cursor-pointer'>
                                             <User2 />
                                             <Button variant="link">
-                                                View Profile
+                                                <Link to={'/profile'}>View Profile</Link>
                                             </Button>
                                         </div>
                                         <div className='flex w-fit items-center gap-2 cursor-pointer'>
                                             <LogOut />
                                             <Button variant="link">
-                                                Logout
+                                                <Link to={'/logout'}>Logout</Link>
                                             </Button>
                                         </div>
                                     </div>

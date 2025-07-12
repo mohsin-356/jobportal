@@ -42,7 +42,8 @@ const Login = () => {
         withCredentials: true
       });
       if (response.data.success) {
-        dispatch(setUser(response.data.user));
+        console.log("yeh hai vo user jo dispatch hony wala hai: "+response.data.userExists);
+        dispatch(setUser(response.data.userExists));
         navigate('/');
         toast.success(response.data.message);
       }

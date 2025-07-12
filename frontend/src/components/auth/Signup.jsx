@@ -55,6 +55,7 @@ const Signup = () => {
         withCredentials: true
       });
       if (response.data.success) {
+
         navigate('/login');
         toast.success(response.data.message);
       }
