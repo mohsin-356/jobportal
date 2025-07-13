@@ -3,11 +3,30 @@ import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover
 import React from 'react'
 import { Button } from '../ui/button'
 import { LogOut, User2 } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
+import { toast } from 'sonner'
+import { USER_API_END_POINT } from '@/utils/constant'
+import { setUser } from '@/redux/authSlice'
 const Navbar = () => {
     const { user } = useSelector(state => state.auth);
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
+    const logoutHandler=async()=>{
+        try {
+            const res=await axios.get(`${USER_API_END_POINT}/logout`,{withCredentials:true})
+            if(res.data.success)
+            {
+                dispatch(setUser(null));
+                navigate('/');
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }
+    }
     return (
         <div className="bg-white shadow-sm">
             <div className="flex items-center justify-between mx-auto max-w-7xl h-16 px-4">
@@ -76,8 +95,8 @@ const Navbar = () => {
                                         </div>
                                         <div className='flex w-fit items-center gap-2 cursor-pointer'>
                                             <LogOut />
-                                            <Button variant="link">
-                                                <Link to={'/logout'}>Logout</Link>
+                                            <Button onClick={logoutHandler} variant="link">
+                                                Logout
                                             </Button>
                                         </div>
                                     </div>
@@ -93,63 +112,3 @@ const Navbar = () => {
     )
 }
 export default Navbar;
-
-// import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
-// import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
-// import React from 'react'
-// import { Button } from '../ui/button'
-
-// const Navbar = () => {
-
-//     return (
-//         <div className='bg-white'>
-//             <div className='flex items-center justify-between mx-auto max-w-7xl h-16'>
-//                 <div>
-//                     <h1 className='text-2xl font-bold'>Job<span className='text-[#F83002]'>Portal</span></h1>
-//                 </div>
-//                 <div className='flex items-center gap-6'>
-//                     <ul className='flex font-medium items-center gap-12'>
-//                         <li>Home</li>
-//                         <li>Jobs</li>
-//                         <li>Browse</li>
-//                     </ul>
-//                     <Popover>
-
-//                         <PopoverTrigger asChild>
-//                             <Avatar className='cursor-pointer'>
-//                                 <AvatarImage
-//                                     src="https://github.com/shadcn.png"
-//                                     alt="@shadcn"
-//                                     className="w-10 h-10 rounded-full object-cover"
-//                                 />
-//                             </Avatar>
-//                         </PopoverTrigger>
-
-//                         <PopoverContent className='w-88'>
-//                             <div className='flex gap-4 space-y-2'>
-//                                 <Avatar className='cursor-pointer'>
-//                                     <AvatarImage
-//                                         src="https://github.com/shadcn.png"
-//                                         alt="@shadcn"
-//                                         className="w-10 h-10 rounded-full object-cover"
-//                                     />
-//                                 </Avatar>
-//                                 <div>
-//                                     <h1 className='text-lg font-semibold'>Shadcn</h1>
-//                                     <p className='text-sm text-gray-500'>shadcn@example.com</p>
-//                                 </div>
-//                             </div>
-//                             <div>
-//                                 <Button variant='link' >View Profile</Button>
-//                                 <Button variant='link' >Logout</Button>
-//                             </div>
-//                         </PopoverContent>
-
-//                     </Popover>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default Navbar
