@@ -1,6 +1,8 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const register = async (req, res) => {
   console.log("Registering user:", req.body);
@@ -101,91 +103,106 @@ export const logout = async (req, res) => {
     console.log(error);
   }
 };
-export const updateProfile = async (req, res) => {
-  try {
-    const { fullname, email, phoneNumber, bio, skills } = req.body;
-    const file=req.file;
-    
-    const userId = req.id;
-    const skillsArray = skills?.split(",").map((skill) => skill.trim()) || [];
-    const updateFields = {
-      fullname,
-      email,
-      phoneNumber,
-      "profile.bio": bio,
-      "profile.skills": skillsArray,
-    };
-
-    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!updatedUser) {
-      return res.status(404).json({
-        message: "User not found",
-        success: false,
-      });
-    }
-
-    return res.status(200).json({
-      message: "Profile updated successfully",
-      success: true,
-      user: {
-        _id: updatedUser._id,
-        fullname: updatedUser.fullname,
-        email: updatedUser.email,
-        phoneNumber: updatedUser.phoneNumber,
-        profile: updatedUser.profile,
-      },
-    });
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    return res.status(500).json({
-      message: "Internal server error",
-      success: false,
-    });
-  }
-};
-//obselete code for updateProfile, kept for reference
 // export const updateProfile = async (req, res) => {
 //   try {
 //     const { fullname, email, phoneNumber, bio, skills } = req.body;
-//     if (!fullname || !email || !phoneNumber || !bio || !skills)
-//     {
-//       return res.status(400).json({ message: "All fields are required", success: false });
-//     }
-//     //cloudinary upload logic would be here
+//     const file=req.file;
+//     const fileUri=getDataUri(file);
+//     const cloudResponse=await cloudinary.uploader.upload(fileUri.content);
 
-//     const skillsArray = skills.split(",").map(skill => skill.trim());
-//     const userId= req.id; // Assuming userId is set in the request by middleware
-//     let userExists = await User.findById(userId);
-//     if (!userExists)
-//     {
-//       return res.status(404).json({ message: "User not found", success: false });
+//     const userId = req.id;//middleware authentication
+//     const skillsArray = skills?.split(",").map((skill) => skill.trim()) || [];
+//     const updateFields = {
+//       fullname,
+//       email,
+//       phoneNumber,
+//       "profile.bio": bio,
+//       "profile.skills": skillsArray,
+//     };
+
+//     const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
+//       new: true,
+//       runValidators: true,
+//     });
+
+//     if (!updatedUser) {
+//       return res.status(404).json({
+//         message: "User not found",
+//         success: false,
+//       });
 //     }
-//     //updating data
-//     userExists.fullname = fullname;
-//     userExists.email = email;
-//     userExists.phoneNumber = phoneNumber;
-//     userExists.profile.bio = bio;
-//     userExists.profile.skills = skillsArray;
-//     //resume comes here later
-//     await userExists.save();
+
 //     return res.status(200).json({
 //       message: "Profile updated successfully",
 //       success: true,
 //       user: {
-//         _id: userExists._id,
-//         fullname: userExists.fullname,
-//         email: userExists.email,
-//         phoneNumber: userExists.phoneNumber,
-//         profile: userExists.profile,
+//         _id: updatedUser._id,
+//         fullname: updatedUser.fullname,
+//         email: updatedUser.email,
+//         phoneNumber: updatedUser.phoneNumber,
+//         profile: updatedUser.profile,
 //       },
 //     });
-
 //   } catch (error) {
 //     console.error("Error updating profile:", error);
-//     return res.status(500).json({ message: "Internal server error", success: false });
+//     return res.status(500).json({
+//       message: "Internal server error",
+//       success: false,
+//     });
 //   }
 // };
+export const updateProfile = async (req, res) => {
+  try {
+    const { fullname, email, phoneNumber, bio, skills } = req.body;
+
+    const file = req.file;
+    // cloudinary ayega idhar
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
+    let skillsArray;
+    if (skills) {
+      skillsArray = skills.split(",");
+    }
+    const userId = req.id; // middleware authentication
+    let user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found.",
+        success: false,
+      });
+    }
+    // updating data
+    if (fullname) user.fullname = fullname;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skills) user.profile.skills = skillsArray;
+
+    // resume comes later here...
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url; // save the cloudinary url
+      user.profile.resumeOriginalName = file.originalname; // Save the original file name
+    }
+
+    await user.save();
+
+    user = {
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      profile: user.profile,
+    };
+
+    return res.status(200).json({
+      message: "Profile updated successfully.",
+      user,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
