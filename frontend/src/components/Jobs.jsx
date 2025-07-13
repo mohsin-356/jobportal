@@ -24,7 +24,6 @@ const Jobs = () => {
     //         setFilterJobs(allJobs)
     //     }
     // }, [allJobs, searchedQuery]);
-
     return (
         <div>
             <Navbar />
@@ -54,7 +53,7 @@ const Jobs = () => {
                         )
                     } */}
                     {/* send a job props to job component */}
-                    <Job job={{ title: "Software Engineer", company: { name: "ABC Corp", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS3PwERLLNB9XKFpeMgAMPxl5VvN3HRJnXQQ&s" }, description: "Job description", position: "Full-time", jobType: "Remote", salary: 10, createdAt: new Date() }} />
+                    <Job job={{id:"1", title: "Software Engineer", company: { name: "ABC Corp", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS3PwERLLNB9XKFpeMgAMPxl5VvN3HRJnXQQ&s" }, description: "Job description", position: "Full-time", jobType: "Remote", salary: 10, createdAt: new Date() }} />
 
                 </div>
             </div>
