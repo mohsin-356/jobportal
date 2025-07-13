@@ -6,7 +6,7 @@ import { Contact, Mail, Pen } from 'lucide-react'
 import { Badge } from './ui/badge'
 import { Label } from './ui/label'
 import AppliedJobTable from './AppliedJobTable'
-// import UpdateProfileDialog from './UpdateProfileDialog'
+import UpdateProfileDialog from './UpdateProfileDialog'
 import { useSelector } from 'react-redux'
 import Footer from './shared/Footer'
 // import useGetAppliedJobs from '@/hooks/useGetAppliedJobs'
@@ -69,7 +69,7 @@ const Profile = () => {
         {/* Applied Job Table   */}
         <AppliedJobTable />
       </div>
-      {/* <UpdateProfileDialog open={open} setOpen={setOpen}/> */}
+      <UpdateProfileDialog open={open} setOpen={setOpen}/>
       <p>Update Profile Dialog will be here</p>
       <Footer />
     </div>
