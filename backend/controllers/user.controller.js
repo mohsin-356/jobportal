@@ -73,6 +73,8 @@ export const login = async (req, res) => {
       phoneNumber: userExists.phoneNumber,
       role: userExists.role,
       profile: userExists.profile,
+      bio: userExists.profile?.bio || "",
+      skills: userExists.profile?.skills || [],
     };
     return res
       .status(200)
@@ -99,10 +101,11 @@ export const logout = async (req, res) => {
     console.log(error);
   }
 };
-
 export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
+    const file=req.file;
+    
     const userId = req.id;
     const skillsArray = skills?.split(",").map((skill) => skill.trim()) || [];
     const updateFields = {
