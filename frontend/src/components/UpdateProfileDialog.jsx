@@ -22,6 +22,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         skills: user?.profile?.skills?.map(skill => skill) || "",
         file: user?.profile?.resume || ""
     });
+    
     console.log("skills:", input.skills);
     const dispatch = useDispatch();
 
