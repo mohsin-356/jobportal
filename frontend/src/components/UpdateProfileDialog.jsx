@@ -66,8 +66,6 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     //     console.log(input);
     // }
 
-
-
     return (
         <div>
             <Dialog open={open}>
@@ -75,7 +73,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                     <DialogHeader>
                         <DialogTitle>Update Profile</DialogTitle>
                     </DialogHeader>
-                    <form onSubmit={submitHandler}>
+                    <form /*onSubmit={submitHandler}*/>
                         <div className='grid gap-4 py-4'>
                             <div className='grid grid-cols-4 items-center gap-4'>
                                 <Label htmlFor="name" className="text-right">Name</Label>
