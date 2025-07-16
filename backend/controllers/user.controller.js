@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+import { profile } from "console";
 
 export const register = async (req, res) => {
   console.log("Registering user:", req.body);
@@ -13,6 +14,10 @@ export const register = async (req, res) => {
         .status(400)
         .json({ message: "All fields are required", success: false });
     }
+    const file=req.file;
+    const fileUri=getDataUri(file);
+    const cloudResponse=await cloudinary.uploader.upload(fileUri.content);
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
@@ -26,6 +31,9 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
+      profile:{
+        profilePhoto:cloudResponse.secure_url
+      }
     });
     return res
       .status(201)
