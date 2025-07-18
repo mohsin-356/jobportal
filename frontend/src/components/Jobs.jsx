@@ -9,21 +9,21 @@ import Footer from './shared/Footer';
 // const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const Jobs = () => {
-    // const { allJobs, searchedQuery } = useSelector(store => store.job);
-    // const [filterJobs, setFilterJobs] = useState(allJobs);
+    const { allJobs, searchedQuery } = useSelector(store => store.job);
+    const [filterJobs, setFilterJobs] = useState(allJobs);
 
-    // useEffect(() => {
-    //     if (searchedQuery) {
-    //         const filteredJobs = allJobs.filter((job) => {
-    //             return job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-    //                 job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-    //                 job.location.toLowerCase().includes(searchedQuery.toLowerCase())
-    //         })
-    //         setFilterJobs(filteredJobs)
-    //     } else {
-    //         setFilterJobs(allJobs)
-    //     }
-    // }, [allJobs, searchedQuery]);
+    useEffect(() => {
+        if (searchedQuery) {
+            const filteredJobs = allJobs.filter((job) => {
+                return job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+                    job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+                    job.location.toLowerCase().includes(searchedQuery.toLowerCase())
+            })
+            setFilterJobs(filteredJobs)
+        } else {
+            setFilterJobs(allJobs)
+        }
+    }, [allJobs, searchedQuery]);
     return (
         <div>
             <Navbar />
@@ -32,7 +32,7 @@ const Jobs = () => {
                     <div className='w-20%'>
                         <FilterCard />
                     </div>
-                    {/* {
+                    {
                         filterJobs.length <= 0 ? <span>Job not found</span> : (
                             <div className='flex-1 h-[88vh] overflow-y-auto pb-5'>
                                 <div className='grid grid-cols-3 gap-4'>
@@ -51,9 +51,8 @@ const Jobs = () => {
                                 </div>
                             </div>
                         )
-                    } */}
+                    }
                     {/* send a job props to job component */}
-                    <Job job={{id:"1", title: "Software Engineer", company: { name: "ABC Corp", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS3PwERLLNB9XKFpeMgAMPxl5VvN3HRJnXQQ&s" }, description: "Job description", position: "Full-time", jobType: "Remote", salary: 10, createdAt: new Date() }} />
 
                 </div>
             </div>
@@ -61,5 +60,4 @@ const Jobs = () => {
         </div>
     )
 }
-
-export default Jobs
+export default Jobs;
