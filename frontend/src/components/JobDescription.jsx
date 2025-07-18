@@ -7,27 +7,27 @@ import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from '@/utils/constant';
 // import { setSingleJob } from '@/redux/jobSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
-const singleJob = {
-    title: "Software Engineer",
-    position: "Full-time",
-    jobType: "Remote",
-    salary: 10,
-    description: "Job description",
-    location: "India",
-    company: {
-        name: "ABC Corp",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS3PwERLLNB9XKFpeMgAMPxl5VvN3HRJnXQQ&s"
-    },
-    applications: [
-        { applicant: "user1" },
-        { applicant: "user2" },
-        { applicant: "user3" }
-    ],
+// const singleJob = {
+//     title: "Software Engineer",
+//     position: "Full-time",
+//     jobType: "Remote",
+//     salary: 10,
+//     description: "Job description",
+//     location: "India",
+//     company: {
+//         name: "ABC Corp",
+//         logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS3PwERLLNB9XKFpeMgAMPxl5VvN3HRJnXQQ&s"
+//     },
+//     applications: [
+//         { applicant: "user1" },
+//         { applicant: "user2" },
+//         { applicant: "user3" }
+//     ],
 
-    experience: 2,
+//     experience: 2,
 
-    createdAt: new Date(),
-};
+//     createdAt: new Date(),
+// };
 const JobDescription = () => {
     // const {singleJob} = useSelector(store => store.job);
     const { user } = useSelector(store => store.auth);
@@ -36,7 +36,7 @@ const JobDescription = () => {
 
     const params = useParams();
     const jobId = params.id;
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     // const applyJobHandler = async () => {
     //     try {
@@ -55,20 +55,20 @@ const JobDescription = () => {
     //     }
     // }
 
-    // useEffect(()=>{
-    //     const fetchSingleJob = async () => {
-    //         try {
-    //             const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`,{withCredentials:true});
-    //             if(res.data.success){
-    //                 dispatch(setSingleJob(res.data.job));
-    //                 setIsApplied(res.data.job.applications.some(application=>application.applicant === user?._id)) // Ensure the state is in sync with fetched data
-    //             }
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     }
-    //     fetchSingleJob(); 
-    // },[jobId,dispatch, user?._id]);
+    useEffect(()=>{
+        const fetchSingleJob = async () => {
+            try {
+                const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`,{withCredentials:true});
+                if(res.data.success){
+                    dispatch(setSingleJob(res.data.job));
+                    setIsApplied(res.data.job.applications.some(application=>application.applicant === user?._id)) // Ensure the state is in sync with fetched data
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchSingleJob(); 
+    },[jobId,dispatch, user?._id]);
 
     return (
         <div className='max-w-7xl mx-auto my-10'>
