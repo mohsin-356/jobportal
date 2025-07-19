@@ -5,38 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Edit2, MoreHorizontal } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-// const filterCompany = [
-//   {
-//     _id: "64f9b4b3c12f4e001d23a1a1",
-//     logo: "https://logo.clearbit.com/google.com",
-//     name: "Google",
-//     createdAt: "2024-11-25T14:35:21.000Z"
-//   },
-//   {
-//     _id: "64f9b4b3c12f4e001d23a1a2",
-//     logo: "https://logo.clearbit.com/microsoft.com",
-//     name: "Microsoft",
-//     createdAt: "2023-04-10T09:20:00.000Z"
-//   },
-//   {
-//     _id: "64f9b4b3c12f4e001d23a1a3",
-//     logo: "https://logo.clearbit.com/amazon.com",
-//     name: "Amazon",
-//     createdAt: "2023-06-12T10:45:00.000Z"
-//   },
-//   {
-//     _id: "64f9b4b3c12f4e001d23a1a4",
-//     logo: "https://logo.clearbit.com/meta.com",
-//     name: "Meta",
-//     createdAt: "2022-08-08T17:10:00.000Z"
-//   },
-//   {
-//     _id: "64f9b4b3c12f4e001d23a1a5",
-//     logo: "https://logo.clearbit.com/openai.com",
-//     name: "OpenAI",
-//     createdAt: "2025-01-10T11:45:00.000Z"
-//   }
-// ];
+
 const CompaniesTable = () => {
     const { companies, searchCompanyByText } = useSelector(store => store.company);
     const [filterCompany, setFilterCompany] = useState(companies);
