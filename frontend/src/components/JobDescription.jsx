@@ -9,33 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import Navbar from './shared/Navbar';
 import Footer from './shared/Footer';
-// const singleJob = {
-//     title: "Software Engineer",
-//     position: "Full-time",
-//     jobType: "Remote",
-//     salary: 10,
-//     description: "Job description",
-//     location: "India",
-//     company: {
-//         name: "ABC Corp",
-//         logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS3PwERLLNB9XKFpeMgAMPxl5VvN3HRJnXQQ&s"
-//     },
-//     applications: [
-//         { applicant: "user1" },
-//         { applicant: "user2" },
-//         { applicant: "user3" }
-//     ],
 
-//     experience: 2,
-
-//     createdAt: new Date(),
-// };
 const JobDescription = () => {
     const { singleJob } = useSelector(store => store.job);
     const { user } = useSelector(store => store.auth);
-    const isIntiallyApplied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
-    const [isApplied, setIsApplied] = useState(isIntiallyApplied);
 
+    const [isApplied, setIsApplied] = useState(false);
     const params = useParams();
     const jobId = params.id;
     const dispatch = useDispatch();
@@ -45,17 +24,19 @@ const JobDescription = () => {
             const res = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobId}`, { withCredentials: true });
 
             if (res.data.success) {
-                setIsApplied(true); // Update the local state
-                const updatedSingleJob = { ...singleJob, applications: [...singleJob.applications, { applicant: user?._id }] }
-                dispatch(setSingleJob(updatedSingleJob)); // helps us to real time UI update
+                setIsApplied(true);
+                const updatedSingleJob = {
+                    ...singleJob,
+                    applications: [...(singleJob.applications || []), { applicant: user?._id }]
+                };
+                dispatch(setSingleJob(updatedSingleJob));
                 toast.success(res.data.message);
-
             }
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
         }
-    }
+    };
 
     useEffect(() => {
         const fetchSingleJob = async () => {
@@ -63,14 +44,21 @@ const JobDescription = () => {
                 const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, { withCredentials: true });
                 if (res.data.success) {
                     dispatch(setSingleJob(res.data.job));
-                    setIsApplied(res.data.job.applications.some(application => application.applicant === user?._id)) // Ensure the state is in sync with fetched data
                 }
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
         fetchSingleJob();
-    }, [jobId, dispatch, user?._id]);
+    }, [jobId, dispatch]);
+
+    // ✅ Set applied state when singleJob or user changes
+    useEffect(() => {
+        if (singleJob && user) {
+            const applied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+            setIsApplied(applied);
+        }
+    }, [singleJob, user]);
 
     return (
         <>
@@ -94,7 +82,7 @@ const JobDescription = () => {
 
                     {user && (
                         <Button
-                            onClick={isApplied ? null : applyJobHandler}
+                            onClick={isApplied ? undefined : applyJobHandler}
                             disabled={isApplied}
                             className={`rounded-lg px-6 py-2 transition-all duration-200 text-white font-semibold ${isApplied
                                     ? 'bg-gray-400 cursor-not-allowed'
@@ -134,19 +122,18 @@ const JobDescription = () => {
                         </p>
                         <p>
                             <span className="font-semibold">Total Applicants:</span>
-                            <span className="ml-3 text-gray-700">{singleJob?.applications?.length}</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.applications?.length || 0}</span>
                         </p>
                         <p>
                             <span className="font-semibold">Posted Date:</span>
-                            <span className="ml-3 text-gray-700">{singleJob?.createdAt.split('T')[0]}</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.createdAt?.split('T')[0]}</span>
                         </p>
                     </div>
                 </div>
             </div>
             <Footer />
         </>
+    );
+};
 
-    )
-}
-
-export default JobDescription
+export default JobDescription;
