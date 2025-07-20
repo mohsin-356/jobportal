@@ -74,37 +74,78 @@ const JobDescription = () => {
 
     return (
         <>
-        <Navbar/>
-            <div className='max-w-7xl mx-auto my-10'>
-                <div className='flex items-center justify-between'>
+            <Navbar />
+            <div className="max-w-7xl mx-auto px-6 py-10 bg-white text-black">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                     <div>
-                        <h1 className='font-bold text-xl'>{singleJob?.title}</h1>
-                        <div className='flex items-center gap-2 mt-4'>
-                            <Badge className={'text-blue-700 font-bold'} variant="ghost">{singleJob?.position} Positions</Badge>
-                            <Badge className={'text-[#F83002] font-bold'} variant="ghost">{singleJob?.jobType}</Badge>
-                            <Badge className={'text-[#7209b7] font-bold'} variant="ghost">{singleJob?.salary}LPA</Badge>
+                        <h1 className="font-bold text-2xl">{singleJob?.title}</h1>
+                        <div className="flex flex-wrap items-center gap-3 mt-4">
+                            <Badge className="text-blue-700 font-semibold bg-blue-50" variant="ghost">
+                                {singleJob?.position} Positions
+                            </Badge>
+                            <Badge className="text-[#F83002] font-semibold bg-red-50" variant="ghost">
+                                {singleJob?.jobType}
+                            </Badge>
+                            <Badge className="text-[#7209b7] font-semibold bg-purple-50" variant="ghost">
+                                {singleJob?.salary} LPA
+                            </Badge>
                         </div>
                     </div>
-                    <Button
-                        onClick={isApplied ? null : applyJobHandler}
-                        disabled={isApplied}
-                        className={`rounded-lg ${isApplied ? 'bg-gray-600 cursor-not-allowed' : 'bg-[#7209b7] hover:bg-[#5f32ad]'}`}>
-                        {isApplied ? 'Already Applied' : 'Apply Now'}
-                    </Button>
+
+                    {user && (
+                        <Button
+                            onClick={isApplied ? null : applyJobHandler}
+                            disabled={isApplied}
+                            className={`rounded-lg px-6 py-2 transition-all duration-200 text-white font-semibold ${isApplied
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-[#F83002] hover:bg-red-600'
+                                }`}
+                        >
+                            {isApplied ? 'Already Applied' : 'Apply Now'}
+                        </Button>
+                    )}
                 </div>
-                <h1 className='border-b-2 border-b-gray-300 font-medium py-4'>Job Description</h1>
-                <div className='my-4'>
-                    <h1 className='font-bold my-1'>Role: <span className='pl-4 font-normal text-gray-800'>{singleJob?.title}</span></h1>
-                    <h1 className='font-bold my-1'>Location: <span className='pl-4 font-normal text-gray-800'>{singleJob?.location}</span></h1>
-                    <h1 className='font-bold my-1'>Description: <span className='pl-4 font-normal text-gray-800'>{singleJob?.description}</span></h1>
-                    <h1 className='font-bold my-1'>Experience: <span className='pl-4 font-normal text-gray-800'>{singleJob?.experience} yrs</span></h1>
-                    <h1 className='font-bold my-1'>Salary: <span className='pl-4 font-normal text-gray-800'>{singleJob?.salary}LPA</span></h1>
-                    <h1 className='font-bold my-1'>Total Applicants: <span className='pl-4 font-normal text-gray-800'>{singleJob?.applications?.length}</span></h1>
-                    <h1 className='font-bold my-1'>Posted Date: <span className='pl-4 font-normal text-gray-800'>{singleJob?.createdAt.split("T")[0]}</span></h1>
+
+                <div className="mt-10">
+                    <h2 className="text-lg font-semibold border-b-2 border-gray-300 pb-2 mb-6">
+                        Job Description
+                    </h2>
+
+                    <div className="space-y-4">
+                        <p>
+                            <span className="font-semibold">Role:</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.title}</span>
+                        </p>
+                        <p>
+                            <span className="font-semibold">Location:</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.location}</span>
+                        </p>
+                        <p>
+                            <span className="font-semibold">Description:</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.description}</span>
+                        </p>
+                        <p>
+                            <span className="font-semibold">Experience:</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.experience} yrs</span>
+                        </p>
+                        <p>
+                            <span className="font-semibold">Salary:</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.salary} LPA</span>
+                        </p>
+                        <p>
+                            <span className="font-semibold">Total Applicants:</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.applications?.length}</span>
+                        </p>
+                        <p>
+                            <span className="font-semibold">Posted Date:</span>
+                            <span className="ml-3 text-gray-700">{singleJob?.createdAt.split('T')[0]}</span>
+                        </p>
+                    </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
+
     )
 }
 
