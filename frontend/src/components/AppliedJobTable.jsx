@@ -2,43 +2,13 @@ import React from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from './ui/table'
 import { Badge } from './ui/badge'
 import { useSelector } from 'react-redux'
-const allAppliedJobs=[
-    {
-        _id: "1",
-        createdAt: "2023-01-01T00:00:00Z",
-        job: {
-            title: "Software Engineer",
-            company: {
-                name: "Tech Company"
-            }
-        },
-        status: "applied"
-    },
-    {
-        _id: "2",
-        createdAt: "2023-01-02T00:00:00Z",
-        job: {
-            title: "Product Manager",
-            company: {
-                name: "Business Company"
-            }
-        },
-        status: "interview"
-    },
-    {
-        _id: "3",
-        createdAt: "2023-01-03T00:00:00Z",
-        job: {
-            title: "Data Scientist",
-            company: {
-                name: "Data Company"
-            }
-        },
-        status: "rejected"
-    }
-]
+
 const AppliedJobTable = () => {
-    // const {allAppliedJobs} = useSelector(store=>store.job);
+    const { allAppliedJobs } = useSelector(store => store.job || {});
+
+    // Yeh line error fix karti hai - undefined ko empty array bana deti hai
+    const appliedJobs = allAppliedJobs || [];
+
     return (
         <div>
             <Table>
@@ -53,12 +23,27 @@ const AppliedJobTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
-                        allAppliedJobs.length <= 0 ? <span>You haven't applied any job yet.</span> : allAppliedJobs.map((appliedJob) => (
-                            <TableRow key={appliedJob._id}>
-                                <TableCell>{appliedJob?.createdAt?.split("T")[0]}</TableCell>
-                                <TableCell>{appliedJob.job?.title}</TableCell>
-                                <TableCell>{appliedJob.job?.company?.name}</TableCell>
-                                <TableCell className="text-right"><Badge className={`${appliedJob?.status === "rejected" ? 'bg-red-400' : appliedJob.status === 'pending' ? 'bg-gray-400' : 'bg-green-400'}`}>{appliedJob.status.toUpperCase()}</Badge></TableCell>
+                        appliedJobs.length <= 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={4} className="text-center py-4">
+                                    <span className="text-gray-500">You haven't applied any job yet.</span>
+                                </TableCell>
+                            </TableRow>
+                        ) : appliedJobs.map((appliedJob) => (
+                            <TableRow key={appliedJob?._id || Math.random()}>
+                                <TableCell>{appliedJob?.createdAt?.split("T")[0] || 'N/A'}</TableCell>
+                                <TableCell>{appliedJob?.job?.title || 'N/A'}</TableCell>
+                                <TableCell>{appliedJob?.job?.company?.name || 'N/A'}</TableCell>
+                                <TableCell className="text-right">
+                                    <Badge className={`${appliedJob?.status === "rejected"
+                                            ? 'bg-red-400'
+                                            : appliedJob?.status === 'pending'
+                                                ? 'bg-gray-400'
+                                                : 'bg-green-400'
+                                        }`}>
+                                        {appliedJob?.status?.toUpperCase() || 'UNKNOWN'}
+                                    </Badge>
+                                </TableCell>
                             </TableRow>
                         ))
                     }
