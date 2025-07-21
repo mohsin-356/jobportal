@@ -7,11 +7,14 @@ import { toast } from 'sonner';
 import { APPLICATION_API_END_POINT } from '@/utils/constant';
 import axios from 'axios';
 import Footer from '../shared/Footer';
+import { Avatar, AvatarImage } from '../ui/avatar';
+import store from '@/redux/store';
 
 const shortlistingStatus = ["Accepted", "Rejected"];
 
 const ApplicantsTable = () => {
     const { applicants } = useSelector(store => store.application);
+
 
     const statusHandler = async (status, id) => {
         console.log('called');
@@ -80,7 +83,7 @@ const ApplicantsTable = () => {
 
                 </TableBody>
             </Table>
-            <Footer/>
+            <Footer />
         </div>
     )
 }
