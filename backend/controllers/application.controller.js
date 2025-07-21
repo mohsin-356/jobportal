@@ -49,7 +49,7 @@ export const applyJob = async (req, res) => {
 };
 export const getAppliedJobs = async (req, res) => {
   try {
-    const userId = req.id;
+    const userId = req.params.id;
     if (!userId) {
       return res
         .status(400)

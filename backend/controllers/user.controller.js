@@ -163,16 +163,19 @@ export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
     const file = req.file;
-    // cloudinary ayega idhar
-    const fileUri = getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
+    let cloudResponse; // Define it outside
+    if (file) {
+      const fileUri = getDataUri(file);
+      cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    }
 
     let skillsArray;
-    if (skills)
-    {
-      skillsArray = skills.split(",");
+    if (skills) {
+      skillsArray = skills.split(",").map(skill => skill.trim());
     }
-    const userId = req.id; // middleware authentication
+
+    const userId = req.id; // from isAuthenticated middleware
     let user = await User.findById(userId);
 
     if (!user) {
@@ -181,21 +184,23 @@ export const updateProfile = async (req, res) => {
         success: false,
       });
     }
-    // updating data
+
+    // Update fields conditionally
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
     if (bio) user.profile.bio = bio;
-    if (skills) user.profile.skills = skillsArray;
+    if (skillsArray) user.profile.skills = skillsArray;
 
-    // resume comes later here...
+    // Only update resume if file was uploaded
     if (cloudResponse) {
-      user.profile.resume = cloudResponse.secure_url; // save the cloudinary url
-      user.profile.resumeOriginalName = file.originalname; // Save the original file name
+      user.profile.resume = cloudResponse.secure_url;
+      user.profile.resumeOriginalName = file.originalname;
     }
 
     await user.save();
 
+    // Return clean user object (no password etc.)
     user = {
       _id: user._id,
       fullname: user.fullname,
@@ -211,6 +216,10 @@ export const updateProfile = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error updating profile:", error);
+    return res.status(500).json({
+      message: "Internal server error.",
+      success: false
+    });
   }
 };
