@@ -11,6 +11,7 @@ import { USER_API_END_POINT } from '@/utils/constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading, setUser } from '@/redux/authSlice';
 import { Loader2 } from 'lucide-react';
+import Footer from '../shared/Footer';
 
 const Login = () => {
   const { loading } = useSelector(state => state.auth);
@@ -119,6 +120,7 @@ const Login = () => {
           <span className='text-sm'>Don't have an account? <Link to="/signup" className='text-blue-600'>Sign Up</Link></span>
         </form>
       </div>
+      <Footer/>
     </div>
   )
 }
