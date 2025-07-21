@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Edit2, Eye, MoreHorizontal } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import Footer from '../shared/Footer'
 
 const AdminJobsTable = () => { 
     const {allAdminJobs, searchJobByText} = useSelector(store=>store.job);
@@ -64,6 +65,7 @@ const AdminJobsTable = () => {
                     }
                 </TableBody>
             </Table>
+            <Footer/>
         </div>
     )
 }

@@ -29,8 +29,8 @@ const Navbar = () => {
     return (
         <div className="bg-white shadow-sm">
             <div className="flex items-center justify-between mx-auto max-w-7xl h-16 px-4">
-                <h1 className="text-2xl font-bold">
-                    Carbon <span className="text-[#F83002]">Jobs</span>
+                <h1 className="text-2xl font-bold"><Link to='/'>
+                    Carbon <span className="text-[#F83002]">Jobs</span></Link>
                 </h1>
 
                 <div className="flex items-center gap-6">
