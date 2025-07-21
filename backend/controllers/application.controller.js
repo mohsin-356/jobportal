@@ -90,10 +90,11 @@ export const getAppliedJobs = async (req, res) => {
 export const getApplicants = async (req, res) => {
   try {
     const jobId = req.params.id;
+    console.log("jobId: ",jobId);
     if (!jobId) {
       return res
-        .status(400)
-        .json({ message: "Job ID is required", success: false });
+      .status(400)
+      .json({ message: "Job ID is required", success: false });
     }
     // Check if job exists
     const job = await Job.findById(jobId).populate({
@@ -103,6 +104,7 @@ export const getApplicants = async (req, res) => {
         path: "applicant",
       },
     });
+    console.log("job we got : ",job);
     if (!job) {
       return res.status(404).json({ message: "Job not found", success: false });
     }

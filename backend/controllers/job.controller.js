@@ -114,7 +114,7 @@ export const getAdminJobs = async (req, res) => {
 
     const jobs = await Job.find({ created_by: adminId }).populate({
       path: "company",
-      select: "name", // only fetch the name field from the Company model
+      select: ["name","logo"], // only fetch the name field from the Company model
     });
 
     if (!jobs || jobs.length === 0) {

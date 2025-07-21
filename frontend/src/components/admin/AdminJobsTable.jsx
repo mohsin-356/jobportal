@@ -7,29 +7,30 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Footer from '../shared/Footer'
 
-const AdminJobsTable = () => { 
-    const {allAdminJobs, searchJobByText} = useSelector(store=>store.job);
+const AdminJobsTable = () => {
+    const { allAdminJobs, searchJobByText } = useSelector(store => store.job);
 
     const [filterJobs, setFilterJobs] = useState(allAdminJobs);
     const navigate = useNavigate();
 
-    useEffect(()=>{ 
+    useEffect(() => {
         console.log('called');
-        const filteredJobs = allAdminJobs.filter((job)=>{
-            if(!searchJobByText){
+        const filteredJobs = allAdminJobs.filter((job) => {
+            if (!searchJobByText) {
                 return true;
             };
             return job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) || job?.company?.name.toLowerCase().includes(searchJobByText.toLowerCase());
 
         });
         setFilterJobs(filteredJobs);
-    },[allAdminJobs,searchJobByText])
+    }, [allAdminJobs, searchJobByText])
     return (
         <div>
             <Table>
                 <TableCaption>A list of your recent  posted jobs</TableCaption>
                 <TableHeader>
                     <TableRow>
+                        <TableHead>Company Logo</TableHead>
                         <TableHead>Company Name</TableHead>
                         <TableHead>Role</TableHead>
                         <TableHead>Date</TableHead>
@@ -40,6 +41,11 @@ const AdminJobsTable = () => {
                     {
                         filterJobs?.map((job) => (
                             <tr>
+                                <TableCell>
+                                    <Avatar>
+                                        <AvatarImage src={job?.company?.logo} />
+                                    </Avatar>
+                                </TableCell>
                                 <TableCell>{job?.company?.name}</TableCell>
                                 {console.log(job.company.name)}
                                 <TableCell>{job?.title}</TableCell>
@@ -48,12 +54,12 @@ const AdminJobsTable = () => {
                                     <Popover>
                                         <PopoverTrigger><MoreHorizontal /></PopoverTrigger>
                                         <PopoverContent className="w-32">
-                                            <div onClick={()=> navigate(`/admin/companies/${job._id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
+                                            <div onClick={() => navigate(`/admin/companies/${job._id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
                                                 <Edit2 className='w-4' />
                                                 <span>Edit</span>
                                             </div>
-                                            <div onClick={()=> navigate(`/admin/jobs/${job._id}/applicants`)} className='flex items-center w-fit gap-2 cursor-pointer mt-2'>
-                                                <Eye className='w-4'/>
+                                            <div onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)} className='flex items-center w-fit gap-2 cursor-pointer mt-2'>
+                                                <Eye className='w-4' />
                                                 <span>Applicants</span>
                                             </div>
                                         </PopoverContent>
@@ -65,7 +71,7 @@ const AdminJobsTable = () => {
                     }
                 </TableBody>
             </Table>
-            <Footer/>
+            <Footer />
         </div>
     )
 }
