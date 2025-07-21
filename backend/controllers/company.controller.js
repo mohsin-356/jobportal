@@ -52,12 +52,14 @@ export const getCompany = async (req, res) => {
 export const getCompanyById = async (req, res) => {
   try {
     const companyId = req.params.id;
+    console.log("companyId: ",companyId);
     if (!companyId) {
       return res
         .status(400)
         .json({ message: "Company ID is required", success: false });
     }
-    const company = await Company.findById(companyId);
+    const company = await Company.findOne({_id:companyId});
+    console.log("get company by id: "+company);
     if (!company) {
       return res
         .status(404)

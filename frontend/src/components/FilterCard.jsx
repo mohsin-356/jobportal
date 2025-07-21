@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 import { Label } from './ui/label'
-// import { useDispatch } from 'react-redux'
-// import { setSearchedQuery } from '@/redux/jobSlice'
+import { useDispatch } from 'react-redux'
+import { setSearchedQuery } from '@/redux/jobSlice'
 
 const fitlerData = [
     {
         fitlerType: "Location",
-        array: ["Delhi NCR", "Bangalore", "Hyderabad", "Pune", "Mumbai"]
+        array: ["Lahore", "Gujranwala", "Karachi", "Islamabad", "Peshawar"]
     },
     {
         fitlerType: "Industry",
@@ -21,13 +21,13 @@ const fitlerData = [
 
 const FilterCard = () => {
     const [selectedValue, setSelectedValue] = useState('');
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const changeHandler = (value) => {
         setSelectedValue(value);
     }
-    useEffect(()=>{
-        // dispatch(setSearchedQuery(selectedValue));
-    },[selectedValue]);
+    useEffect(() => {
+        dispatch(setSearchedQuery(selectedValue));
+    }, [selectedValue]);
     return (
         <div className='w-full bg-white p-3 rounded-md'>
             <h1 className='font-bold text-lg'>Filter Jobs</h1>
