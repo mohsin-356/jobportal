@@ -32,7 +32,6 @@ const AdminJobs = () => {
         </div>
         <AdminJobsTable />
       </div>
-      <Footer/>
     </div>
   )
 }
