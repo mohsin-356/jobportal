@@ -85,8 +85,8 @@ const JobDescription = () => {
                             onClick={isApplied ? undefined : applyJobHandler}
                             disabled={isApplied}
                             className={`rounded-lg px-6 py-2 transition-all duration-200 text-white font-semibold ${isApplied
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-[#F83002] hover:bg-red-600'
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-[#F83002] hover:bg-red-600'
                                 }`}
                         >
                             {isApplied ? 'Already Applied' : 'Apply Now'}

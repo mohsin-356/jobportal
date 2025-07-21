@@ -40,6 +40,7 @@ const AdminJobsTable = () => {
                         filterJobs?.map((job) => (
                             <tr>
                                 <TableCell>{job?.company?.name}</TableCell>
+                                {console.log(job.company.name)}
                                 <TableCell>{job?.title}</TableCell>
                                 <TableCell>{job?.createdAt.split("T")[0]}</TableCell>
                                 <TableCell className="text-right cursor-pointer">

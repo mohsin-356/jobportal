@@ -14,7 +14,17 @@ export const postJob = async (req, res) => {
       position,
       companyId,
     } = req.body;
-
+    console.log(
+      title,
+      description,
+      requirements,
+      salary,
+      location,
+      jobType,
+      experienceLevel,
+      position,
+      companyId
+    );
     const userId = req.id;
     if (
       !title ||
@@ -57,7 +67,7 @@ export const postJob = async (req, res) => {
 export const getAllJobs = async (req, res) => {
   try {
     const keywords = req.query.keywords || "";
-    
+
     const query = {
       $or: [
         { title: { $regex: keywords, $options: "i" } },
@@ -65,7 +75,9 @@ export const getAllJobs = async (req, res) => {
       ],
     };
 
-    const jobs = await Job.find(query).populate({ path: "company" }).sort({ createdAt: -1 });
+    const jobs = await Job.find(query)
+      .populate({ path: "company" })
+      .sort({ createdAt: -1 });
     if (!jobs || jobs.length === 0) {
       return res.status(404).json({ message: "No jobs found", success: false });
     }
